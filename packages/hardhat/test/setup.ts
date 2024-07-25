@@ -175,7 +175,7 @@ export const getPoolAddress = async (
 
   // 1 squeeth is 3000 eth
   const squeethPriceInEth = wsqueethEthPrice || 0.3
-  const wsqueethEthPool = await createUniPool(squeethPriceInEth, weth, wsqueeth, positionManager, uniswapFactory) as Contract
+  const wsqueethEthPool = await createUniPool(squeethPriceInEth, weth, wsqueeth as unknown as Contract, positionManager, uniswapFactory) as Contract
   // 1 weth is 3000 dai
   const ethPriceInDai = ethDaiPrice || 3000
   const ethDaiPool = await createUniPool(ethPriceInDai, dai, weth, positionManager, uniswapFactory) as Contract

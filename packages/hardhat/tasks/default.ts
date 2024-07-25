@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { task, types } from 'hardhat/config';
+import { Provider } from "@ethersproject/abstract-provider";
 import '@nomiclabs/hardhat-waffle';
 
 import { ethers } from 'ethers';
@@ -52,7 +53,7 @@ task('fundedwallet', 'Create a wallet (pk) link and fund it with deployer?')
     // IF NOT SEND USING LOCAL HARDHAT NODE:
     if (localDeployerMnemonic) {
       let deployerWallet = ethers.Wallet.fromMnemonic(localDeployerMnemonic);
-      deployerWallet = deployerWallet.connect(ethers.provider);
+      deployerWallet = deployerWallet.connect(ethers.provider as unknown as Provider);
       console.log(
         '💵 Sending ' + amount + ' ETH to ' + randomWallet.address + ' using deployer account'
       );

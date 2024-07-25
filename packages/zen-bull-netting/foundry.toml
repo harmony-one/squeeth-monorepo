@@ -6,6 +6,7 @@ test = 'test'
 auto_detect_solc = true
 optimizer = true
 optimizer_runs = 10
+solc-version = "0.8.17"
 
 [profile.test]
 no_match_test = "Fuzzing"
