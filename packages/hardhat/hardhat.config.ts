@@ -196,6 +196,11 @@ const config: HardhatUserConfig = {
         chainId: 1666700000,
         accounts,
     },
+    harmony: {
+      url: "https://api.s0.t.hmny.io",
+      chainId: 1666600000,
+      accounts,
+    },
   },
   solidity: {
     compilers: [
