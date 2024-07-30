@@ -3,16 +3,16 @@ pragma solidity =0.7.6;
 
 import { DeployScript } from "./Deploy.s.sol";
 
-contract HarmonyTestnetDeploy is DeployScript {
+contract HarmonyMainnetDeploy is DeployScript {
     address public systemOwnerAddress = vm.envAddress("OWNER_ADDRESS");
     address public auctionManagerAddress = vm.envAddress("OWNER_ADDRESS");
-    address public constant crabAddress = 0x9a9A498f8D10a5De282B15428429a3F6DCC79BeB; // CrabStrategyV2 
-    address public constant powerTokenControllerAddress = 0x1bB7fBfb24388226c85B602660Af23301995577e; // Controller
-    address public constant eulerAddress = 0xf657D9cB1284d72F4bac0d5006B9C0Ac38B0f00d;
-    address public constant eulerMarketsModuleAddress = 0xAa7E572dbA730878478B6c808F5FFA6fa893d43D;
-    address public constant uniFactoryAddress = 0x14d34078f68d07859CF57B25785B923c443DaE71;
-    address public constant eTokenAddress = 0xA8737E49525bE492894A042586e024dFb25ECeD0; // eWETH
-    address public constant dTokenAddress = 0x527E0c74F6Cf0f0122FB6584447fBd29b58e5bA3; // dUSDC
+    address public constant crabAddress = 0x4116c1e672E94742463d26B2E82e6E3b2Eb329A3; // CrabStrategyV2 
+    address public constant powerTokenControllerAddress = 0x2Eab3378Fe281b3CE16e0f6F4dEb7d47c644A978; // Controller
+    address public constant eulerAddress = 0xCF1C0C140101181d7b0601131b2154Dc88f4B117;
+    address public constant eulerMarketsModuleAddress = 0xd240bC98E0B5a84101463d66e899665830118f5a;
+    address public constant uniFactoryAddress = 0x12d21f5d0Ab768c312E19653Bf3f89917866B8e8;
+    address public constant eTokenAddress = 0x37EdBd95fCFD212299B4E1Ef40d526292B15951d; // eWETH
+    address public constant dTokenAddress = 0x3acCFB93aE0604De1E188dAEd09A8acCc1ef0453; // dUSDC
     uint256 public constant bullStrategyCap = 400e18;
     uint256 public constant fullRebalancePriceTolerance = 0.05e18;
     uint256 public constant rebalanceWethLimitPriceTolerance = 0.05e18;

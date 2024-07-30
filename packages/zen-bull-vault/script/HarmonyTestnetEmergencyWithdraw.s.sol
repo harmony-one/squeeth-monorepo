@@ -7,7 +7,7 @@ import { IERC20 } from "openzeppelin/token/ERC20/IERC20.sol";
 import { EmergencyWithdraw } from "../src/EmergencyWithdraw.sol";
 
 
-contract MainnetDeployEmergencyWithdraw is Script {
+contract HarmonyTestnetDeployEmergencyWithdraw is Script {
     address payable public constant ZEN_BULL = 0x9bAD58c14B0b00bb7A48d3F089Fd58778294ad32;
     address public constant WETH = 0x67142ed6CF29B07138fca14fD306f9308D63D09f;
     address public constant CRAB = 0x9a9A498f8D10a5De282B15428429a3F6DCC79BeB; // CrabStrategyV2
