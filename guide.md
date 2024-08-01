@@ -65,9 +65,11 @@ This script can be used to create a new vault and deposit collateral into it or 
 
 #### Example
 
+To execute a trade that potentially profits from volatility in the underlying asset, use this command:
 ```bash
 make mint-and-deposit VAULT_ID=0 COLL_AMOUNT=10000000000000000000 AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 IS_W_AMOUNT=false
 ```
+This command creates a new vault and deposits an initial amount of collateral. The trade can be profitable if the value of the PowerPerp appreciates relative to the collateral cost.
 
 #### `MintAndDeposit.s.sol`
 
@@ -136,9 +138,11 @@ Burn a specified power perp amount and remove collateral from the vault.
 
 #### Example
 
+To close a position and realize a profit after an increase in the PowerPerp's value:
 ```bash
 make burn-amount VAULT_ID=4 WITHDRAW_AMOUNT=9000000000000000000 POWER_PERP_AMOUNT=4000000000000000000 IS_W_AMOUNT=false
 ```
+This command burns a specific amount of PowerPerp, and withdraws a set amount of collateral from the vault. It's profitable if the price increase of the PowerPerp offsets the costs of maintaining the position.
 
 #### `BurnAmount.s.sol`
 
@@ -192,9 +196,11 @@ Deposit additional collateral into a vault.
 
 #### Example
 
+To strengthen your position during a market dip, ensuring you stay above the minimum collateral requirement:
 ```bash
 make deposit-collateral VAULT_ID=3 COLL_AMOUNT=1000000000000000000 UNI_TOKEN_ID=0
 ```
+This command deposits more collateral into a vault, allowing for increased exposure or safeguarding against liquidation.
 
 #### `DepositCollateral.s.sol`
 
@@ -241,9 +247,11 @@ Withdraw collateral from a vault.
 
 #### Example
 
+To realize a profit by reducing exposure when the market conditions are favorable:
 ```bash
 make withdraw-collateral VAULT_ID=3 COLL_AMOUNT=1000000000000000000 IS_UNI_TOKEN=false
 ```
+This command withdraws collateral, which could be beneficial if the collateral's value has appreciated or if you are taking profits.
 
 #### `WithdrawCollateral.s.sol`
 
@@ -285,9 +293,11 @@ Liquidate a vault. If a vault is under the 150% collateral ratio, anyone can liq
 
 #### Example
 
+To capitalize on a potential gain from a vault's undercollateralization:
 ```bash
 make liquidate VAULT_ID=3 MAX_DEBT_AMOUNT=10000000
 ```
+This command allows you to liquidate an undercollateralized vault, potentially profiting by acquiring assets at below-market prices due to the forced liquidation.
 
 #### `Liquidate.s.sol`
 
