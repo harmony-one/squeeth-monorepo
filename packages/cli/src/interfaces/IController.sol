@@ -44,4 +44,10 @@ interface IController {
     function depositUniPositionToken(uint256 _vaultId, uint256 _uniTokenId) external;
 
     function withdrawUniPositionToken(uint256 _vaultId) external;
+
+    function wPowerPerpPool() external view returns (address);
+
+    function weth() external view returns (address);
+
+    function wPowerPerp() external view returns (address);
 }
