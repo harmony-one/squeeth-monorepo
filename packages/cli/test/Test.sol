@@ -26,10 +26,6 @@ contract TestTrading is Test {
 
 
     function testOpenLong() public {
-        SwapRouter debugRouter = new SwapRouter(pool.factory(), address(weth));
-
-        vm.etch(address(router), GetCode.at(address(debugRouter)));
-
         address token0 = pool.token0();
         address token1 = pool.token1();
         uint24 fee = pool.fee();
@@ -100,7 +96,7 @@ contract TestTrading is Test {
                 fee: fee,
                 recipient: Bob,
                 deadline: block.timestamp,
-                amountIn: 1e18,
+                amountIn: 0.5e18,
                 amountOutMinimum: 0,
                 sqrtPriceLimitX96: 0
             })
