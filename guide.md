@@ -58,16 +58,16 @@ This script can be used to create a new vault and deposit collateral into it or 
 #### Parameters
 
 - `VAULT_ID`: The ID of the vault. Pass `0` to create a new vault. | *number*
-- `COLL_AMOUNT`: Collateral amount. | *number*
-- `AMOUNT`: Power perp amount. | *number*
+- `COLLATERAL_AMOUNT`: Collateral amount. | *number*
+- `MINT_AMOUNT`: Power perp mint amount. | *number*
 - `UNI_TOKEN_ID`: Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | *number*
-- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` and `"false"` for `PowerPerp`. | *boolean*
+- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` (non-rebasing) and `"false"` for `powerPerp` (rebasing). | *boolean*
 
 #### Example
 
 To execute a trade that potentially profits from volatility in the underlying asset, use this command:
 ```bash
-make mint-and-deposit VAULT_ID=0 COLL_AMOUNT=10000000000000000000 AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 IS_W_AMOUNT=false
+make mint-and-deposit VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 IS_W_AMOUNT=false
 ```
 This command creates a new vault and deposits an initial amount of collateral. The trade can be profitable if the value of the PowerPerp appreciates relative to the collateral cost.
 
@@ -132,15 +132,15 @@ Burn a specified power perp amount and remove collateral from the vault.
 #### Parameters
 
 - `VAULT_ID`: The ID of the vault. | *number*
-- `POWER_PERP_AMOUNT`: Power perp amount. | *number*
+- `BURN_AMOUNT`: Burn amount. | *number*
 - `WITHDRAW_AMOUNT`: Collateral amount. | *number*
-- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` and `"false"` for `PowerPerp`. | *boolean*
+- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` (non-rebasing) and `"false"` for `powerPerp` (rebasing). | *boolean*
 
 #### Example
 
 To close a position and realize a profit after an increase in the PowerPerp's value:
 ```bash
-make burn-amount VAULT_ID=4 WITHDRAW_AMOUNT=9000000000000000000 POWER_PERP_AMOUNT=4000000000000000000 IS_W_AMOUNT=false
+make burn-amount VAULT_ID=4 WITHDRAW_AMOUNT=9000000000000000000 BURN_AMOUNT=4000000000000000000 IS_W_AMOUNT=false
 ```
 This command burns a specific amount of PowerPerp, and withdraws a set amount of collateral from the vault. It's profitable if the price increase of the PowerPerp offsets the costs of maintaining the position.
 
@@ -191,14 +191,14 @@ Deposit additional collateral into a vault.
 #### Parameters
 
 - `VAULT_ID`: The ID of the vault. | *number*
-- `COLL_AMOUNT`: Collateral amount. | *number*
+- `COLLATERAL_AMOUNT`: Collateral amount. | *number*
 - `UNI_TOKEN_ID`: Uniswap v3 position token ID. | *number*
 
 #### Example
 
 To strengthen your position during a market dip, ensuring you stay above the minimum collateral requirement:
 ```bash
-make deposit-collateral VAULT_ID=3 COLL_AMOUNT=1000000000000000000 UNI_TOKEN_ID=0
+make deposit-collateral VAULT_ID=3 COLLATERAL_AMOUNT=1000000000000000000 UNI_TOKEN_ID=0
 ```
 This command deposits more collateral into a vault, allowing for increased exposure or safeguarding against liquidation.
 
@@ -242,14 +242,14 @@ Withdraw collateral from a vault.
 #### Parameters
 
 - `VAULT_ID`: The ID of the vault. | *number*
-- `COLL_AMOUNT`: Collateral amount. | *number*
+- `COLLATERAL_AMOUNT`: Collateral amount. | *number*
 - `IS_UNI_TOKEN`: Set to `"true"` for a Uniswap v3 position token and `"false"` for collateral. | *boolean*
 
 #### Example
 
 To realize a profit by reducing exposure when the market conditions are favorable:
 ```bash
-make withdraw-collateral VAULT_ID=3 COLL_AMOUNT=1000000000000000000 IS_UNI_TOKEN=false
+make withdraw-collateral VAULT_ID=3 COLLATERAL_AMOUNT=1000000000000000000 IS_UNI_TOKEN=false
 ```
 This command withdraws collateral, which could be beneficial if the collateral's value has appreciated or if you are taking profits.
 

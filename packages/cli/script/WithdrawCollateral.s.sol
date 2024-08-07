@@ -8,6 +8,12 @@ import {IController} from "src/interfaces/IController.sol";
 contract WithdrawCollateral is Script {
     IController controller = IController(payable(vm.envAddress("CONTROLLER_ADDRESS")));
 
+    /**
+     * @notice withdraw collateral from a vault
+     * @param _vaultId id of the vault
+     * @param _collateralAmount amount of eth to withdraw
+     * @param _isUniToken if the collateral is a uniswap v3 position token
+    */
     function run(
         uint256 _vaultId,
         uint256 _collateralAmount,
