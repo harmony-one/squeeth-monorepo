@@ -44,3 +44,9 @@ mint-and-short:
 	--rpc-url $(RPC_URL) --legacy --broadcast \
 	--sig "run(uint256,uint256,uint256,uint256,uint8)" \
 	${VAULT_ID} ${COLLATERAL_AMOUNT} ${MINT_AMOUNT} ${UNI_TOKEN_ID} ${SLIPPAGE}
+
+open-long:
+	@forge script ./script/OpenLong.s.sol:OpenLong \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256,uint8)" \
+	${WETH_AMOUNT} ${SLIPPAGE}

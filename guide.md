@@ -162,3 +162,18 @@ Mint PowerPerp and deposit it into the wSqueeth/WETH pool.
 ```
 make mint-and-lp VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 WETH_AMOUNT=10000000000000000000
 ```
+
+### Open Long Position
+
+Open a long position by swapping WETH for wPowerPerp.
+
+#### Parameters
+
+- `WETH_AMOUNT` - Amount of WETH to swap for wPowerPerp. | *number*
+- `SLIPPAGE` - Maximum slippage percentage. | *number*
+
+#### Example
+
+```
+make open-long WETH_AMOUNT=10000000000000000000 SLIPPAGE=20
+```
