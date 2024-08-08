@@ -20,7 +20,7 @@ contract TestTrading is Test {
     IController controller = IController(payable(vm.envAddress("CONTROLLER_ADDRESS")));
     INonfungiblePositionManager positionManager = INonfungiblePositionManager(vm.envAddress("UNI_NONFUNGIBLE_POSITION_MANAGER_ADDRESS"));
     IUniswapV3Pool pool = IUniswapV3Pool(controller.wPowerPerpPool());
-    ISwapRouter router = ISwapRouter(vm.envAddress("UNI_NONFUNGIBLE_POSITION_MANAGER_ADDRESS"));
+    ISwapRouter router = ISwapRouter(vm.envAddress("UNI_SWAP_ROUTER_ADDRESS"));
     IWETH9 weth = IWETH9(controller.weth());
     IERC20 wPowerPerp = IERC20(controller.wPowerPerp());
 

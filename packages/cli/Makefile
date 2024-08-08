@@ -32,3 +32,15 @@ liquidate:
 	--rpc-url $(RPC_URL) --legacy --broadcast \
 	--sig "run(uint256,uint256)" \
 	${VAULT_ID} ${MAX_DEBT_AMOUNT}
+
+mint-and-lp:
+	@forge script ./script/MintAndLP.s.sol:MintAndLP \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256,uint256,uint256,uint256,uint256)" \
+	${VAULT_ID} ${COLLATERAL_AMOUNT} ${MINT_AMOUNT} ${UNI_TOKEN_ID} ${WETH_AMOUNT}
+
+mint-and-short:
+	@forge script ./script/MintAndShort.s.sol:MintAndShort \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256,uint256,uint256,uint256,uint8)" \
+	${VAULT_ID} ${COLLATERAL_AMOUNT} ${MINT_AMOUNT} ${UNI_TOKEN_ID} ${SLIPPAGE}
