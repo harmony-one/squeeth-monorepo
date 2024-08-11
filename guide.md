@@ -177,3 +177,53 @@ Open a long position by swapping WETH for wPowerPerp.
 ```
 make open-long WETH_AMOUNT=10000000000000000000 SLIPPAGE=20
 ```
+
+### Open Short Position
+
+Open a short position by swapping wPowerPerp for WETH.
+
+#### Parameters
+
+- `VAULT_ID` - The ID of the vault. Pass `0` to create a new vault. | *number*
+- `COLLATERAL_AMOUNT` - Collateral amount. Not required. | *number*
+- `MINT_AMOUNT` - Amount of wPowerPerp to mint and swap for WETH. | *number*
+- `UNI_TOKEN_ID` - Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | *number*
+- `SLIPPAGE` - Maximum slippage percentage. | *number*
+
+#### Example
+
+```
+make mint-and-short VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 SLIPPAGE=10
+```
+
+### Close Mint Position
+
+Close a mint position by swapping WETH for wPowerPerp and burning the wPowerPerp.
+
+#### Parameters
+
+- `VAULT_ID` - The ID of the vault. | *number*
+- `SHORT_AMOUNT` - Amount of wPowerPerp to burn. | *number*
+- `COLLATERAL_WITHDRAW_AMOUNT` - Amount of WETH to withdraw from vault. Not required. | *number*
+- `SLIPPAGE` - Maximum slippage percentage. | *number*
+
+#### Example
+
+```
+make close-short VAULT_ID=1 SHORT_AMOUNT=5000000000000000000 COLLATERAL_WITHDRAW_AMOUNT=0 SLIPPAGE=20
+```
+
+### Close Long Position
+
+Close a long position by swapping wPowerPerp for WETH.
+
+#### Parameters
+
+- `WPOWER_PERP_AMOUNT` - Amount of wPowerPerp to swap for WETH. | *number*
+- `SLIPPAGE` - Maximum slippage percentage. | *number*
+
+#### Example
+
+```
+make close-long WPOWER_PERP_AMOUNT=5000000000000000000 SLIPPAGE=20
+```

@@ -45,8 +45,20 @@ mint-and-short:
 	--sig "run(uint256,uint256,uint256,uint256,uint8)" \
 	${VAULT_ID} ${COLLATERAL_AMOUNT} ${MINT_AMOUNT} ${UNI_TOKEN_ID} ${SLIPPAGE}
 
+close-short:
+	@forge script ./script/CloseShort.s.sol:CloseShort \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256,uint256,uint256,uint8)" \
+	${VAULT_ID} ${SHORT_AMOUNT} ${COLLATERAL_WITHDRAW_AMOUNT} ${SLIPPAGE}
+
 open-long:
 	@forge script ./script/OpenLong.s.sol:OpenLong \
 	--rpc-url $(RPC_URL) --legacy --broadcast \
 	--sig "run(uint256,uint8)" \
 	${WETH_AMOUNT} ${SLIPPAGE}
+
+close-long:
+	@forge script ./script/CloseLong.s.sol:CloseLong \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256,uint8)" \
+	${WPOWER_PERP_AMOUNT} ${SLIPPAGE}
