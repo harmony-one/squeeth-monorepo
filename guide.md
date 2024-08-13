@@ -227,3 +227,29 @@ Close a long position by swapping wPowerPerp for WETH.
 ```
 make close-long WPOWER_PERP_AMOUNT=5000000000000000000 SLIPPAGE=20
 ```
+
+### Crab Strategy Deposit
+
+Deposit ETH into the Crab Strategy to mint wSqueeth and strategy token.
+
+#### Parameters
+- `ETH_AMOUNT` - Amount of ETH to deposit. | *number*
+
+#### Example
+
+```
+make crab-deposit ETH_AMOUNT=10000000000000000000
+```
+
+### Crab Strategy Withdraw
+
+Withdraw ETH from the Crab Strategy by burning wSqueeth and strategy token.
+
+#### Parameters
+- `CRAB_AMOUNT` - Amount of strategy token to burn. | *number*
+
+#### Example
+
+```
+make crab-withdraw CRAB_AMOUNT=10000000000000000000
+```

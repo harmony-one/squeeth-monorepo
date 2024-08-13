@@ -38,7 +38,7 @@ contract CloseShort is Script {
 
         uint24 fee = pool.fee();
 
-        // Currently there are issues with the router, this function reverts
+        // This could revert due to low liquidity
         (uint256 amountInMaximum, , , ) = quoter.quoteExactOutputSingle(
             IQuoterV2.QuoteExactOutputSingleParams({
                 tokenIn: weth,

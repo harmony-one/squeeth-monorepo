@@ -62,3 +62,15 @@ close-long:
 	--rpc-url $(RPC_URL) --legacy --broadcast \
 	--sig "run(uint256,uint8)" \
 	${WPOWER_PERP_AMOUNT} ${SLIPPAGE}
+
+crab-deposit:
+	@forge script ./script/CrabDeposit.s.sol:CrabDeposit \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256)" \
+	${ETH_AMOUNT}
+
+crab-withdraw:
+	@forge script ./script/CrabWithdraw.s.sol:CrabWithdraw \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256)" \
+	${CRAB_AMOUNT}
