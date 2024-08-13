@@ -26,5 +26,6 @@
    1.3 `CONTROLLER_ADDRESS` - The address of the Squeeth Controller contract.
    1.4 `RPC_URL` - The RPC URL of the Harmony network.
    1.5 `PRIVATE_KEY` - The private key of the account that will interact with the contracts.
+   1.6 Add private keys and addresses of users which are used in the profitable trades script.
    1. Install dependencies using `forge install`.
    2. Use `make` scripts to interact with the protocol.

@@ -253,3 +253,17 @@ Withdraw ETH from the Crab Strategy by burning wSqueeth and strategy token.
 ```
 make crab-withdraw CRAB_AMOUNT=10000000000000000000
 ```
+
+### Profitable Trades
+
+Execute 3 trades, 2 long and 1 short. The first long to close a position, being profitable and the short to as well.
+
+#### Parameters
+
+None
+
+#### Example
+
+```
+make trade
+```

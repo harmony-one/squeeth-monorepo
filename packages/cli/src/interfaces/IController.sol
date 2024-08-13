@@ -73,4 +73,6 @@ interface IController {
     function setFeeRecipient(address) external;
 
     function vaults(uint256) external view returns (Vault memory);
+
+    function owner() external view returns (address);
 }

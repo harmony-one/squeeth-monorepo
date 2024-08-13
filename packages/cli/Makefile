@@ -74,3 +74,7 @@ crab-withdraw:
 	--rpc-url $(RPC_URL) --legacy --broadcast \
 	--sig "run(uint256)" \
 	${CRAB_AMOUNT}
+
+trade:
+	@forge script ./script/ProfitableTrades.s.sol:ProfitableTrades \
+	--rpc-url $(RPC_URL) --legacy --broadcast
