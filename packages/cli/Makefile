@@ -84,3 +84,15 @@ crab-withdraw:
 trade:
 	@forge script ./script/ProfitableTrades.s.sol:ProfitableTrades \
 	--rpc-url $(RPC_URL) --legacy --broadcast
+
+zen-deposit:
+	@forge script ./script/ZenDeposit.s.sol:ZenDeposit \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256)" \
+	${CRAB_AMOUNT}
+
+zen-withdraw:
+	@forge script ./script/ZenWithdraw.s.sol:ZenWithdraw \
+	--rpc-url $(RPC_URL) --legacy --broadcast \
+	--sig "run(uint256)" \
+	${BULL_AMOUNT}
