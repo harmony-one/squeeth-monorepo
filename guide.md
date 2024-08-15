@@ -163,6 +163,21 @@ Mint PowerPerp and deposit it into the wSqueeth/WETH pool.
 make mint-and-lp VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 WETH_AMOUNT=10000000000000000000
 ```
 
+### Withdraw LP
+
+Withdraw wSqueeth/WETH pool liquidity and burn wPowerPerp.
+
+#### Parameters
+- `TOKEN_ID`: Uniswap v3 position token ID. | *number*
+- `VAULT_ID`: The ID of the vault. | *number*
+- `WITHDRAW_AMOUNT`: Amount of collateral to withdraw from vault. | *number*
+
+#### Example
+
+```
+make withdraw-lp TOKEN_ID=23 VAULT_ID=1 WITHDRAW_AMOUNT=10000000000000000000
+```
+
 ### Open Long Position
 
 Open a long position by swapping WETH for wPowerPerp.

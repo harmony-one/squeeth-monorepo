@@ -39,6 +39,12 @@ mint-and-lp:
 	--sig "run(uint256,uint256,uint256,uint256,uint256)" \
 	${VAULT_ID} ${COLLATERAL_AMOUNT} ${MINT_AMOUNT} ${UNI_TOKEN_ID} ${WETH_AMOUNT}
 
+withdraw-lp:
+	@forge script ./script/WithdrawLP.s.sol:WithdrawLP \
+	--rpc-url $(RPC_URL) --legacy \
+	--sig "run(uint256,uint256,uint256)" \
+	${TOKEN_ID} ${VAULT_ID} ${WITHDRAW_AMOUNT}
+
 mint-and-short:
 	@forge script ./script/MintAndShort.s.sol:MintAndShort \
 	--rpc-url $(RPC_URL) --legacy --broadcast \
