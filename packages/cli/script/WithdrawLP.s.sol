@@ -34,7 +34,6 @@ contract WithdrawLP is Script {
             _tokenId
         );
 
-        // TODO: Fix approve
         (wPowerPerpAmount, wethAmount) = positionManager.decreaseLiquidity(
             INonfungiblePositionManager.DecreaseLiquidityParams({
                 tokenId: _tokenId,
