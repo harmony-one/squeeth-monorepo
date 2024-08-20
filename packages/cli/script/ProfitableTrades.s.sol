@@ -35,22 +35,55 @@ contract ProfitableTrades is Script {
     uint256 vaultId; // stack too deep
     uint256 mintedAmount; // stack too deep
 
-    function run() external {
+    /**
+     * @notice Execute 3 trades, 2 long and 1 short. The first long to close a position, being profitable and the short to as well.
+     * @param _wethAmount Amount of WETH to provide as liquidity.
+     * @param _bobWethAmount Bob's Amount of WETH to swap for wPowerPerp.
+     * @param _charlieMintAmount Charlie's Amount of wPowerPerp to mint and swap for WETH.
+     * @param _danWethAmount Dan's Amount of WETH to swap for wPowerPerp.
+     *
+     */
+
+    function run(
+        uint256 _wethAmount,
+        uint256 _bobWethAmount,
+        uint256 _charlieMintAmount,
+        uint256 _danWethAmount
+    ) external {
+        // Ensure the provided amounts are sufficient for the account balances
+        require(
+            _wethAmount <= address(msg.sender).balance,
+            "Insufficient balance for msg.sender"
+        );
+        require(_bobWethAmount <= Bob.balance, "Insufficient balance for Bob");
+        require(
+            _charlieMintAmount <= Charlie.balance,
+            "Insufficient balance for Charlie"
+        );
+        require(_danWethAmount <= Dan.balance, "Insufficient balance for Dan");
+
         uint24 fee = pool.fee();
 
-        // Alice provides liquidity
+        // msg.sender provides liquidity
         {
             int24 tickSpacing = pool.tickSpacing();
 
-            vm.startBroadcast(AlicePK);
-            weth.deposit{value: 50 ether}();
+            vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+            weth.deposit{value: _wethAmount}();
 
-            controller.mintWPowerPerpAmount{value: 50 ether}(0, 50 ether, 0);
+            controller.mintWPowerPerpAmount{value: _wethAmount}(
+                0,
+                _wethAmount,
+                0
+            );
 
-            IERC20(address(weth)).approve(address(positionManager), 50 ether);
+            IERC20(address(weth)).approve(
+                address(positionManager),
+                _wethAmount
+            );
             IERC20(address(wPowerPerp)).approve(
                 address(positionManager),
-                50 ether
+                _wethAmount
             );
 
             positionManager.mint(
@@ -60,11 +93,11 @@ contract ProfitableTrades is Script {
                     fee: fee,
                     tickLower: (-887272 / tickSpacing) * tickSpacing,
                     tickUpper: (887272 / tickSpacing) * tickSpacing,
-                    amount0Desired: 50 ether,
-                    amount1Desired: 50 ether,
+                    amount0Desired: _wethAmount,
+                    amount1Desired: _wethAmount,
                     amount0Min: 0,
                     amount1Min: 0,
-                    recipient: Alice,
+                    recipient: msg.sender,
                     deadline: block.timestamp + 1000
                 })
             );
@@ -75,8 +108,8 @@ contract ProfitableTrades is Script {
         // Bob opens long position
         vm.startBroadcast(BobPK);
 
-        weth.deposit{value: 20 ether}();
-        weth.approve(address(router), 20 ether);
+        weth.deposit{value: _bobWethAmount}();
+        weth.approve(address(router), _bobWethAmount);
 
         uint256 wPowerPerpBob = router.exactInputSingle(
             ISwapRouter.ExactInputSingleParams({
@@ -85,7 +118,7 @@ contract ProfitableTrades is Script {
                 fee: fee,
                 recipient: Bob,
                 deadline: block.timestamp + 1000,
-                amountIn: 20 ether,
+                amountIn: _bobWethAmount,
                 amountOutMinimum: 0,
                 sqrtPriceLimitX96: 0
             })
@@ -97,8 +130,8 @@ contract ProfitableTrades is Script {
         vm.startBroadcast(CharliePK);
 
         (vaultId, mintedAmount) = controller.mintPowerPerpAmount{
-            value: 10 ether
-        }(0, 10 ether, 0);
+            value: _charlieMintAmount
+        }(0, _charlieMintAmount, 0);
 
         wPowerPerp.approve(address(router), mintedAmount);
 
@@ -120,8 +153,8 @@ contract ProfitableTrades is Script {
         // Dan opens long position
         vm.startBroadcast(DanPK);
 
-        weth.deposit{value: 40 ether}();
-        weth.approve(address(router), 40 ether);
+        weth.deposit{value: _danWethAmount}();
+        weth.approve(address(router), _danWethAmount);
 
         uint256 wPowerPerpDan = router.exactInputSingle(
             ISwapRouter.ExactInputSingleParams({
@@ -130,7 +163,7 @@ contract ProfitableTrades is Script {
                 fee: fee,
                 recipient: Dan,
                 deadline: block.timestamp + 1000,
-                amountIn: 40 ether,
+                amountIn: _danWethAmount,
                 amountOutMinimum: 0,
                 sqrtPriceLimitX96: 0
             })
@@ -200,12 +233,12 @@ contract ProfitableTrades is Script {
 
         vm.stopBroadcast();
 
-        // Check profits and losses
+        //Check profits and losses
         console.log("Bob's weth amount: ", wethAmountBob);
-        require(wethAmountBob > 20 ether, "Bob is not profitable");
+        require(wethAmountBob > _bobWethAmount, "Bob is not profitable");
 
         console.log("Dan's weth amount: ", wethAmountDan);
-        require(wethAmountDan < 40 ether, "Dan is profitable");
+        require(wethAmountDan < _danWethAmount, "Dan is profitable");
 
         console.log(
             "Charlie's wPowerPerp amount before burn: ",

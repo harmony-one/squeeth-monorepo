@@ -59,18 +59,20 @@ This script can be used to create a new vault and deposit collateral into it or 
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. Pass `0` to create a new vault. | *number*
-- `COLLATERAL_AMOUNT`: Collateral amount. Not required. | *number*
-- `MINT_AMOUNT`: Power perp mint amount. | *number*
-- `UNI_TOKEN_ID`: Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | *number*
-- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` (non-rebasing) and `"false"` for `powerPerp` (rebasing). | *boolean*
+- `VAULT_ID`: The ID of the vault. Pass `0` to create a new vault. | _number_
+- `COLLATERAL_AMOUNT`: Collateral amount. Not required. | _number_
+- `MINT_AMOUNT`: Power perp mint amount. | _number_
+- `UNI_TOKEN_ID`: Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | _number_
+- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` (non-rebasing) and `"false"` for `powerPerp` (rebasing). | _boolean_
 
 #### Example
 
 To execute a trade that potentially profits from volatility in the underlying asset, use this command:
+
 ```bash
 make mint-and-deposit VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 IS_W_AMOUNT=false
 ```
+
 This command creates a new vault and deposits an initial amount of collateral. The trade can be profitable if the value of the PowerPerp appreciates relative to the collateral cost.
 
 ### Burn Amount
@@ -79,17 +81,19 @@ Burn a specified power perp amount and remove collateral from the vault.
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. | *number*
-- `BURN_AMOUNT`: Burn amount. | *number*
-- `WITHDRAW_AMOUNT`: Collateral amount. | *number*
-- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` (non-rebasing) and `"false"` for `powerPerp` (rebasing). | *boolean*
+- `VAULT_ID`: The ID of the vault. | _number_
+- `BURN_AMOUNT`: Burn amount. | _number_
+- `WITHDRAW_AMOUNT`: Collateral amount. | _number_
+- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` (non-rebasing) and `"false"` for `powerPerp` (rebasing). | _boolean_
 
 #### Example
 
 To close a position and realize a profit after an increase in the PowerPerp's value:
+
 ```bash
 make burn-amount VAULT_ID=4 WITHDRAW_AMOUNT=9000000000000000000 BURN_AMOUNT=4000000000000000000 IS_W_AMOUNT=false
 ```
+
 This command burns a specific amount of PowerPerp, and withdraws a set amount of collateral from the vault. It's profitable if the price increase of the PowerPerp offsets the costs of maintaining the position.
 
 ### Deposit Additional Collateral
@@ -98,16 +102,18 @@ Deposit additional collateral into a vault.
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. | *number*
-- `COLLATERAL_AMOUNT`: Collateral amount. | *number*
-- `UNI_TOKEN_ID`: Uniswap v3 position token ID. | *number*
+- `VAULT_ID`: The ID of the vault. | _number_
+- `COLLATERAL_AMOUNT`: Collateral amount. | _number_
+- `UNI_TOKEN_ID`: Uniswap v3 position token ID. | _number_
 
 #### Example
 
 To strengthen your position during a market dip, ensuring you stay above the minimum collateral requirement:
+
 ```bash
 make deposit-collateral VAULT_ID=3 COLLATERAL_AMOUNT=1000000000000000000 UNI_TOKEN_ID=0
 ```
+
 This command deposits more collateral into a vault, allowing for increased exposure or safeguarding against liquidation.
 
 ### Withdraw Collateral
@@ -116,16 +122,18 @@ Withdraw collateral from a vault.
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. | *number*
-- `COLLATERAL_AMOUNT`: Collateral amount. | *number*
-- `IS_UNI_TOKEN`: Set to `"true"` for a Uniswap v3 position token and `"false"` for collateral. | *boolean*
+- `VAULT_ID`: The ID of the vault. | _number_
+- `COLLATERAL_AMOUNT`: Collateral amount. | _number_
+- `IS_UNI_TOKEN`: Set to `"true"` for a Uniswap v3 position token and `"false"` for collateral. | _boolean_
 
 #### Example
 
 To realize a profit by reducing exposure when the market conditions are favorable:
+
 ```bash
 make withdraw-collateral VAULT_ID=3 COLLATERAL_AMOUNT=1000000000000000000 IS_UNI_TOKEN=false
 ```
+
 This command withdraws collateral, which could be beneficial if the collateral's value has appreciated or if you are taking profits.
 
 ### Liquidate Vault
@@ -134,15 +142,17 @@ Liquidate a vault. If a vault is under the 150% collateral ratio, anyone can liq
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. | *number*
-- `MAX_DEBT_AMOUNT`: Maximum amount of `wPowerPerp` to repay. | *number*
+- `VAULT_ID`: The ID of the vault. | _number_
+- `MAX_DEBT_AMOUNT`: Maximum amount of `wPowerPerp` to repay. | _number_
 
 #### Example
 
 To capitalize on a potential gain from a vault's undercollateralization:
+
 ```bash
 make liquidate VAULT_ID=3 MAX_DEBT_AMOUNT=10000000
 ```
+
 This command allows you to liquidate an undercollateralized vault, potentially profiting by acquiring assets at below-market prices due to the forced liquidation.
 
 ### Mint And LP
@@ -151,11 +161,11 @@ Mint PowerPerp and deposit it into the wSqueeth/WETH pool.
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. Pass `0` to create a new vault. | *number*
-- `COLLATERAL_AMOUNT`: Collateral amount. Not required. | *number*
-- `MINT_AMOUNT`: Amount of wPowerPerp to mint and provide as liquidity. | *number*
-- `UNI_TOKEN_ID`: Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | *number*
-- `WETH_AMOUNT`: Amount of WETH to provide as liquidity. | *number*
+- `VAULT_ID`: The ID of the vault. Pass `0` to create a new vault. | _number_
+- `COLLATERAL_AMOUNT`: Collateral amount. Not required. | _number_
+- `MINT_AMOUNT`: Amount of wPowerPerp to mint and provide as liquidity. | _number_
+- `UNI_TOKEN_ID`: Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | _number_
+- `WETH_AMOUNT`: Amount of WETH to provide as liquidity. | _number_
 
 #### Example
 
@@ -168,9 +178,10 @@ make mint-and-lp VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5
 Withdraw wSqueeth/WETH pool liquidity and burn wPowerPerp.
 
 #### Parameters
-- `TOKEN_ID`: Uniswap v3 position token ID. | *number*
-- `VAULT_ID`: The ID of the vault. | *number*
-- `WITHDRAW_AMOUNT`: Amount of collateral to withdraw from vault. | *number*
+
+- `TOKEN_ID`: Uniswap v3 position token ID. | _number_
+- `VAULT_ID`: The ID of the vault. | _number_
+- `WITHDRAW_AMOUNT`: Amount of collateral to withdraw from vault. | _number_
 
 #### Example
 
@@ -184,8 +195,8 @@ Open a long position by swapping WETH for wPowerPerp.
 
 #### Parameters
 
-- `WETH_AMOUNT` - Amount of WETH to swap for wPowerPerp. | *number*
-- `SLIPPAGE` - Maximum slippage percentage. | *number*
+- `WETH_AMOUNT` - Amount of WETH to swap for wPowerPerp. | _number_
+- `SLIPPAGE` - Maximum slippage percentage. | _number_
 
 #### Example
 
@@ -199,11 +210,11 @@ Open a short position by swapping wPowerPerp for WETH.
 
 #### Parameters
 
-- `VAULT_ID` - The ID of the vault. Pass `0` to create a new vault. | *number*
-- `COLLATERAL_AMOUNT` - Collateral amount. Not required. | *number*
-- `MINT_AMOUNT` - Amount of wPowerPerp to mint and swap for WETH. | *number*
-- `UNI_TOKEN_ID` - Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | *number*
-- `SLIPPAGE` - Maximum slippage percentage. | *number*
+- `VAULT_ID` - The ID of the vault. Pass `0` to create a new vault. | _number_
+- `COLLATERAL_AMOUNT` - Collateral amount. Not required. | _number_
+- `MINT_AMOUNT` - Amount of wPowerPerp to mint and swap for WETH. | _number_
+- `UNI_TOKEN_ID` - Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | _number_
+- `SLIPPAGE` - Maximum slippage percentage. | _number_
 
 #### Example
 
@@ -217,10 +228,10 @@ Close a mint position by swapping WETH for wPowerPerp and burning the wPowerPerp
 
 #### Parameters
 
-- `VAULT_ID` - The ID of the vault. | *number*
-- `SHORT_AMOUNT` - Amount of wPowerPerp to burn. | *number*
-- `COLLATERAL_WITHDRAW_AMOUNT` - Amount of WETH to withdraw from vault. Not required. | *number*
-- `SLIPPAGE` - Maximum slippage percentage. | *number*
+- `VAULT_ID` - The ID of the vault. | _number_
+- `SHORT_AMOUNT` - Amount of wPowerPerp to burn. | _number_
+- `COLLATERAL_WITHDRAW_AMOUNT` - Amount of WETH to withdraw from vault. Not required. | _number_
+- `SLIPPAGE` - Maximum slippage percentage. | _number_
 
 #### Example
 
@@ -234,8 +245,8 @@ Close a long position by swapping wPowerPerp for WETH.
 
 #### Parameters
 
-- `WPOWER_PERP_AMOUNT` - Amount of wPowerPerp to swap for WETH. | *number*
-- `SLIPPAGE` - Maximum slippage percentage. | *number*
+- `WPOWER_PERP_AMOUNT` - Amount of wPowerPerp to swap for WETH. | _number_
+- `SLIPPAGE` - Maximum slippage percentage. | _number_
 
 #### Example
 
@@ -248,7 +259,8 @@ make close-long WPOWER_PERP_AMOUNT=5000000000000000000 SLIPPAGE=20
 Deposit ETH into the Crab Strategy to mint wSqueeth and strategy token.
 
 #### Parameters
-- `ETH_AMOUNT` - Amount of ETH to deposit. | *number*
+
+- `ETH_AMOUNT` - Amount of ETH to deposit. | _number_
 
 #### Example
 
@@ -261,7 +273,8 @@ make crab-deposit ETH_AMOUNT=10000000000000000000
 Withdraw ETH from the Crab Strategy by burning wSqueeth and strategy token.
 
 #### Parameters
-- `CRAB_AMOUNT` - Amount of strategy token to burn. | *number*
+
+- `CRAB_AMOUNT` - Amount of strategy token to burn. | _number_
 
 #### Example
 
@@ -275,10 +288,14 @@ Execute 3 trades, 2 long and 1 short. The first long to close a position, being 
 
 #### Parameters
 
-None
+- `WETH_AMOUNT`: Amount of WETH to provide as liquidity. | _number_
+- `BOB_WETH_AMOUNT` - Bob's Amount of WETH to swap for wPowerPerp. | _number_
+- `CHARLIE_MINT_AMOUNT` - Charlie's Amount of wPowerPerp to mint and swap for WETH. | _number_
+- `DAN_WETH_AMOUNT` - Dan's Amount of WETH to swap for wPowerPerp. | _number_
 
 #### Example
 
 ```
-make trade
+make trade WETH_AMOUNT=10000000000000000000 BOB_WETH_AMOUNT=2000000000000000000 CHARLIE_MINT_AM
+OUNT=20000000000000000000 DAN_WETH_AMOUNT=20000000000000000000
 ```

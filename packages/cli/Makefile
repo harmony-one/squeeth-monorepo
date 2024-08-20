@@ -83,7 +83,9 @@ crab-withdraw:
 
 trade:
 	@forge script ./script/ProfitableTrades.s.sol:ProfitableTrades \
-	--rpc-url $(RPC_URL) --legacy --broadcast --sender ${OWNER_ADDRESS}
+	--rpc-url $(RPC_URL) --legacy --broadcast --skip-simulation --sender ${OWNER_ADDRESS} \
+	--sig "run(uint256,uint256,uint256,uint256)" \
+	${WETH_AMOUNT} ${BOB_WETH_AMOUNT} ${CHARLIE_MINT_AMOUNT} ${DAN_WETH_AMOUNT}
 
 zen-deposit:
 	@forge script ./script/ZenDeposit.s.sol:ZenDeposit \
