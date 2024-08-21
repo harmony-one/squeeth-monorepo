@@ -46,6 +46,8 @@
    - `RPC_URL` - `https://api.s0.t.hmny.io`
    - `PRIVATE_KEY`
    - `CONTROLLER_ADDRESS` - `0x2Eab3378Fe281b3CE16e0f6F4dEb7d47c644A978`
+   - `UNI_SWAP_ROUTER_ADDRESS` - `0x88250361E27a3Bf78C0588782B8792d0Bd3A5Ad5`
+   - `UNI_NONFUNGIBLE_POSITION_MANAGER_ADDRESS` - `0xE4E259BE9c84260FDC7C9a3629A0410b1Fb3C114`
 
 2. Install Dependencies:
 
@@ -57,73 +59,21 @@ This script can be used to create a new vault and deposit collateral into it or 
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. Pass `0` to create a new vault. | *number*
-- `COLL_AMOUNT`: Collateral amount. | *number*
-- `AMOUNT`: Power perp amount. | *number*
-- `UNI_TOKEN_ID`: Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | *number*
-- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` and `"false"` for `PowerPerp`. | *boolean*
+- `VAULT_ID`: The ID of the vault. Pass `0` to create a new vault. | _number_
+- `COLLATERAL_AMOUNT`: Collateral amount. Not required. | _number_
+- `MINT_AMOUNT`: Power perp mint amount. | _number_
+- `UNI_TOKEN_ID`: Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | _number_
+- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` (non-rebasing) and `"false"` for `powerPerp` (rebasing). | _boolean_
 
 #### Example
 
 To execute a trade that potentially profits from volatility in the underlying asset, use this command:
+
 ```bash
-make mint-and-deposit VAULT_ID=0 COLL_AMOUNT=10000000000000000000 AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 IS_W_AMOUNT=false
+make mint-and-deposit VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 IS_W_AMOUNT=false
 ```
+
 This command creates a new vault and deposits an initial amount of collateral. The trade can be profitable if the value of the PowerPerp appreciates relative to the collateral cost.
-
-#### `MintAndDeposit.s.sol`
-
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity =0.7.6;
-
-import { Script, console } from "forge-std/Script.sol";
-import { IController } from "src/interfaces/IController.sol";
-
-contract MintAndDeposit is Script {
-  IController controller =
-    IController(payable(vm.envAddress("CONTROLLER_ADDRESS")));
-
-  function run(
-    uint256 _vaultId,
-    uint256 _collateralAmount,
-    uint256 _powerPerpAmount,
-    uint256 _uniTokenId,
-    bool _isWAmount
-  ) public {
-    uint256 vaultId;
-    uint256 amount;
-
-    vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-
-    if (_isWAmount) {
-      (vaultId) = controller.mintWPowerPerpAmount{ value: _collateralAmount }(
-        _vaultId,
-        _powerPerpAmount,
-        _uniTokenId
-      );
-    } else {
-      (vaultId, amount) = controller.mintPowerPerpAmount{
-        value: _collateralAmount
-      }(_vaultId, _powerPerpAmount, _uniTokenId);
-    }
-
-    vm.stopBroadcast();
-
-    console.log("Vault ID: %d", vaultId);
-    console.log("Amount: %d", amount);
-  }
-
-  function onERC721Received(
-    address,
-    address,
-    uint256,
-    bytes calldata
-  ) external pure returns (bytes4) {
-    return this.onERC721Received.selector;
-  }
-}
-```
 
 ### Burn Amount
 
@@ -131,58 +81,20 @@ Burn a specified power perp amount and remove collateral from the vault.
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. | *number*
-- `POWER_PERP_AMOUNT`: Power perp amount. | *number*
-- `WITHDRAW_AMOUNT`: Collateral amount. | *number*
-- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` and `"false"` for `PowerPerp`. | *boolean*
+- `VAULT_ID`: The ID of the vault. | _number_
+- `BURN_AMOUNT`: Burn amount. | _number_
+- `WITHDRAW_AMOUNT`: Collateral amount. | _number_
+- `IS_W_AMOUNT`: Set to `"true"` for `wPowerPerp` (non-rebasing) and `"false"` for `powerPerp` (rebasing). | _boolean_
 
 #### Example
 
 To close a position and realize a profit after an increase in the PowerPerp's value:
+
 ```bash
-make burn-amount VAULT_ID=4 WITHDRAW_AMOUNT=9000000000000000000 POWER_PERP_AMOUNT=4000000000000000000 IS_W_AMOUNT=false
+make burn-amount VAULT_ID=4 WITHDRAW_AMOUNT=9000000000000000000 BURN_AMOUNT=4000000000000000000 IS_W_AMOUNT=false
 ```
+
 This command burns a specific amount of PowerPerp, and withdraws a set amount of collateral from the vault. It's profitable if the price increase of the PowerPerp offsets the costs of maintaining the position.
-
-#### `BurnAmount.s.sol`
-
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity =0.7.6;
-
-import { Script } from "forge-std/Script.sol";
-import { IController } from "src/interfaces/IController.sol";
-
-contract BurnAmount is Script {
-  IController controller =
-    IController(payable(vm.envAddress("CONTROLLER_ADDRESS")));
-
-  function run(
-    uint256 _vaultId,
-    uint256 _powerPerpAmount,
-    uint256 _withdrawAmount,
-    bool _isWAmount
-  ) public {
-    vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-
-    if (_isWAmount) {
-      controller.burnWPowerPerpAmount(
-        _vaultId,
-        _powerPerpAmount,
-        _withdrawAmount
-      );
-    } else {
-      controller.burnPowerPerpAmount(
-        _vaultId,
-        _powerPerpAmount,
-        _withdrawAmount
-      );
-    }
-
-    vm.stopBroadcast();
-  }
-}
-```
 
 ### Deposit Additional Collateral
 
@@ -190,50 +102,19 @@ Deposit additional collateral into a vault.
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. | *number*
-- `COLL_AMOUNT`: Collateral amount. | *number*
-- `UNI_TOKEN_ID`: Uniswap v3 position token ID. | *number*
+- `VAULT_ID`: The ID of the vault. | _number_
+- `COLLATERAL_AMOUNT`: Collateral amount. | _number_
+- `UNI_TOKEN_ID`: Uniswap v3 position token ID. | _number_
 
 #### Example
 
 To strengthen your position during a market dip, ensuring you stay above the minimum collateral requirement:
+
 ```bash
-make deposit-collateral VAULT_ID=3 COLL_AMOUNT=1000000000000000000 UNI_TOKEN_ID=0
+make deposit-collateral VAULT_ID=3 COLLATERAL_AMOUNT=1000000000000000000 UNI_TOKEN_ID=0
 ```
+
 This command deposits more collateral into a vault, allowing for increased exposure or safeguarding against liquidation.
-
-#### `DepositCollateral.s.sol`
-
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity =0.7.6;
-
-import { Script } from "forge-std/Script.sol";
-import { IController } from "src/interfaces/IController.sol";
-
-contract DepositCollateral is Script {
-  IController controller =
-    IController(payable(vm.envAddress("CONTROLLER_ADDRESS")));
-
-  function run(
-    uint256 _vaultId,
-    uint256 _collateralAmount,
-    uint256 _uniTokenId
-  ) public {
-    vm.startBroadcast(vm.envUint("
-
-PRIVATE_KEY"));
-
-    if (_collateralAmount > 0)
-      controller.deposit{ value: _collateralAmount }(_vaultId);
-
-    if (_uniTokenId > 0)
-      controller.depositUniPositionToken(_vaultId, _uniTokenId);
-
-    vm.stopBroadcast();
-  }
-}
-```
 
 ### Withdraw Collateral
 
@@ -241,46 +122,19 @@ Withdraw collateral from a vault.
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. | *number*
-- `COLL_AMOUNT`: Collateral amount. | *number*
-- `IS_UNI_TOKEN`: Set to `"true"` for a Uniswap v3 position token and `"false"` for collateral. | *boolean*
+- `VAULT_ID`: The ID of the vault. | _number_
+- `COLLATERAL_AMOUNT`: Collateral amount. | _number_
+- `IS_UNI_TOKEN`: Set to `"true"` for a Uniswap v3 position token and `"false"` for collateral. | _boolean_
 
 #### Example
 
 To realize a profit by reducing exposure when the market conditions are favorable:
+
 ```bash
-make withdraw-collateral VAULT_ID=3 COLL_AMOUNT=1000000000000000000 IS_UNI_TOKEN=false
+make withdraw-collateral VAULT_ID=3 COLLATERAL_AMOUNT=1000000000000000000 IS_UNI_TOKEN=false
 ```
+
 This command withdraws collateral, which could be beneficial if the collateral's value has appreciated or if you are taking profits.
-
-#### `WithdrawCollateral.s.sol`
-
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity =0.7.6;
-
-import "forge-std/Script.sol";
-import { IController } from "src/interfaces/IController.sol";
-
-contract WithdrawCollateral is Script {
-  IController controller =
-    IController(payable(vm.envAddress("CONTROLLER_ADDRESS")));
-
-  function run(
-    uint256 _vaultId,
-    uint256 _collateralAmount,
-    bool _isUniToken
-  ) public {
-    vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-
-    if (_collateralAmount > 0) controller.withdraw(_vaultId, _collateralAmount);
-
-    if (_isUniToken) controller.withdrawUniPositionToken(_vaultId);
-
-    vm.stopBroadcast();
-  }
-}
-```
 
 ### Liquidate Vault
 
@@ -288,36 +142,160 @@ Liquidate a vault. If a vault is under the 150% collateral ratio, anyone can liq
 
 #### Parameters
 
-- `VAULT_ID`: The ID of the vault. | *number*
-- `MAX_DEBT_AMOUNT`: Maximum amount of `wPowerPerp` to repay. | *number*
+- `VAULT_ID`: The ID of the vault. | _number_
+- `MAX_DEBT_AMOUNT`: Maximum amount of `wPowerPerp` to repay. | _number_
 
 #### Example
 
 To capitalize on a potential gain from a vault's undercollateralization:
+
 ```bash
 make liquidate VAULT_ID=3 MAX_DEBT_AMOUNT=10000000
 ```
+
 This command allows you to liquidate an undercollateralized vault, potentially profiting by acquiring assets at below-market prices due to the forced liquidation.
 
-#### `Liquidate.s.sol`
+### Mint And LP
 
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity =0.7.6;
+Mint PowerPerp and deposit it into the wSqueeth/WETH pool.
 
-import { Script } from "forge-std/Script.sol";
-import { IController } from "src/interfaces/IController.sol";
+#### Parameters
 
-contract Liquidate is Script {
-  IController controller =
-    IController(payable(vm.envAddress("CONTROLLER_ADDRESS")));
+- `VAULT_ID`: The ID of the vault. Pass `0` to create a new vault. | _number_
+- `COLLATERAL_AMOUNT`: Collateral amount. Not required. | _number_
+- `MINT_AMOUNT`: Amount of wPowerPerp to mint and provide as liquidity. | _number_
+- `UNI_TOKEN_ID`: Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | _number_
+- `WETH_AMOUNT`: Amount of WETH to provide as liquidity. | _number_
 
-  function run(uint256 _vaultId, uint256 _maxDebtAmount) public {
-    vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+#### Example
 
-    controller.liquidate(_vaultId, _maxDebtAmount);
+```
+make mint-and-lp VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 WETH_AMOUNT=10000000000000000000
+```
 
-    vm.stopBroadcast();
-  }
-}
+### Withdraw LP
+
+Withdraw wSqueeth/WETH pool liquidity and burn wPowerPerp.
+
+#### Parameters
+
+- `TOKEN_ID`: Uniswap v3 position token ID. | _number_
+- `VAULT_ID`: The ID of the vault. | _number_
+- `WITHDRAW_AMOUNT`: Amount of collateral to withdraw from vault. | _number_
+
+#### Example
+
+```
+make withdraw-lp TOKEN_ID=23 VAULT_ID=1 WITHDRAW_AMOUNT=10000000000000000000
+```
+
+### Open Long Position
+
+Open a long position by swapping WETH for wPowerPerp.
+
+#### Parameters
+
+- `WETH_AMOUNT` - Amount of WETH to swap for wPowerPerp. | _number_
+- `SLIPPAGE` - Maximum slippage percentage. | _number_
+
+#### Example
+
+```
+make open-long WETH_AMOUNT=10000000000000000000 SLIPPAGE=20
+```
+
+### Open Short Position
+
+Open a short position by swapping wPowerPerp for WETH.
+
+#### Parameters
+
+- `VAULT_ID` - The ID of the vault. Pass `0` to create a new vault. | _number_
+- `COLLATERAL_AMOUNT` - Collateral amount. Not required. | _number_
+- `MINT_AMOUNT` - Amount of wPowerPerp to mint and swap for WETH. | _number_
+- `UNI_TOKEN_ID` - Uniswap v3 position token ID (additional collateral). Pass `0` to skip. | _number_
+- `SLIPPAGE` - Maximum slippage percentage. | _number_
+
+#### Example
+
+```
+make mint-and-short VAULT_ID=0 COLLATERAL_AMOUNT=10000000000000000000 MINT_AMOUNT=5000000000000000000 UNI_TOKEN_ID=0 SLIPPAGE=10
+```
+
+### Close Mint Position
+
+Close a mint position by swapping WETH for wPowerPerp and burning the wPowerPerp.
+
+#### Parameters
+
+- `VAULT_ID` - The ID of the vault. | _number_
+- `SHORT_AMOUNT` - Amount of wPowerPerp to burn. | _number_
+- `COLLATERAL_WITHDRAW_AMOUNT` - Amount of WETH to withdraw from vault. Not required. | _number_
+- `SLIPPAGE` - Maximum slippage percentage. | _number_
+
+#### Example
+
+```
+make close-short VAULT_ID=1 SHORT_AMOUNT=5000000000000000000 COLLATERAL_WITHDRAW_AMOUNT=0 SLIPPAGE=20
+```
+
+### Close Long Position
+
+Close a long position by swapping wPowerPerp for WETH.
+
+#### Parameters
+
+- `WPOWER_PERP_AMOUNT` - Amount of wPowerPerp to swap for WETH. | _number_
+- `SLIPPAGE` - Maximum slippage percentage. | _number_
+
+#### Example
+
+```
+make close-long WPOWER_PERP_AMOUNT=5000000000000000000 SLIPPAGE=20
+```
+
+### Crab Strategy Deposit
+
+Deposit ETH into the Crab Strategy to mint wSqueeth and strategy token.
+
+#### Parameters
+
+- `ETH_AMOUNT` - Amount of ETH to deposit. | _number_
+
+#### Example
+
+```
+make crab-deposit ETH_AMOUNT=10000000000000000000
+```
+
+### Crab Strategy Withdraw
+
+Withdraw ETH from the Crab Strategy by burning wSqueeth and strategy token.
+
+#### Parameters
+
+- `CRAB_AMOUNT` - Amount of strategy token to burn. | _number_
+
+#### Example
+
+```
+make crab-withdraw CRAB_AMOUNT=10000000000000000000
+```
+
+### Profitable Trades
+
+Execute 3 trades, 2 long and 1 short. The first long to close a position, being profitable and the short to as well.
+
+#### Parameters
+
+- `WETH_AMOUNT`: Amount of WETH to provide as liquidity. | _number_
+- `BOB_WETH_AMOUNT` - Bob's Amount of WETH to swap for wPowerPerp. | _number_
+- `CHARLIE_MINT_AMOUNT` - Charlie's Amount of wPowerPerp to mint and swap for WETH. | _number_
+- `DAN_WETH_AMOUNT` - Dan's Amount of WETH to swap for wPowerPerp. | _number_
+
+#### Example
+
+```
+make trade WETH_AMOUNT=10000000000000000000 BOB_WETH_AMOUNT=2000000000000000000 CHARLIE_MINT_AM
+OUNT=20000000000000000000 DAN_WETH_AMOUNT=20000000000000000000
 ```

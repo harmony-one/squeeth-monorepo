@@ -53,3 +53,15 @@
 [submodule "packages/cli/lib/forge-std"]
 	path = packages/cli/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "packages/cli/lib/v3-core"]
+	path = packages/cli/lib/v3-core
+	url = https://github.com/Uniswap/v3-core
+[submodule "packages/cli/lib/v3-periphery"]
+	path = packages/cli/lib/v3-periphery
+	url = https://github.com/Uniswap/v3-periphery
+[submodule "packages/cli/lib/openzeppelin-contracts"]
+	path = packages/cli/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
+[submodule "packages/cli/lib/swap-router-contracts"]
+	path = packages/cli/lib/swap-router-contracts
+	url = https://github.com/Uniswap/swap-router-contracts

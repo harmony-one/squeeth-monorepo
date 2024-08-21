@@ -5,6 +5,20 @@ pragma solidity =0.7.6;
 pragma abicoder v2;
 
 interface IController {
+    struct Vault {
+        // the address that can update the vault
+        address operator;
+        // uniswap position token id deposited into the vault as collateral
+        // 2^32 is 4,294,967,296, which means the vault structure will work with up to 4 billion positions
+        uint32 NftCollateralId;
+        // amount of eth (wei) used in the vault as collateral
+        // 2^96 / 1e18 = 79,228,162,514, which means a vault can store up to 79 billion eth
+        // when we need to do calculations, we always cast this number to uint256 to avoid overflow
+        uint96 collateralAmount;
+        // amount of wPowerPerp minted from the vault
+        uint128 shortAmount;
+    }
+
     function mintPowerPerpAmount(
         uint256 _vaultId,
         uint256 _powerPerpAmount,
@@ -39,9 +53,26 @@ interface IController {
         uint256 _withdrawAmount
     ) external returns (uint256 wPowerPerpAmount);
 
-    function liquidate(uint256 _vaultId, uint256 _maxDebtAmount) external returns (uint256);
+    function liquidate(uint256 _vaultId, uint256 _maxDebtAmount)
+        external
+        returns (uint256);
 
-    function depositUniPositionToken(uint256 _vaultId, uint256 _uniTokenId) external;
+    function depositUniPositionToken(uint256 _vaultId, uint256 _uniTokenId)
+        external;
 
     function withdrawUniPositionToken(uint256 _vaultId) external;
+
+    function wPowerPerpPool() external view returns (address);
+
+    function weth() external view returns (address);
+
+    function wPowerPerp() external view returns (address);
+
+    function setFeeRate(uint256) external;
+
+    function setFeeRecipient(address) external;
+
+    function vaults(uint256) external view returns (Vault memory);
+
+    function owner() external view returns (address);
 }

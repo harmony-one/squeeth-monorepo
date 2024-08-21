@@ -1,0 +1,45 @@
+{
+  "transactions": [
+    {
+      "hash": "0xeee8445b0a5e257e59c65490f909833d035027a1de5a2a9d57b6f219182ac2d6",
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x2eab3378fe281b3ce16e0f6f4deb7d47c644a978",
+      "function": "mintPowerPerpAmount(uint256,uint256,uint256)",
+      "arguments": [
+        "0",
+        "5000000000000000000",
+        "0"
+      ],
+      "transaction": {
+        "from": "0x230c3761fa17560ba16f4a43e52f90411938164c",
+        "to": "0x2eab3378fe281b3ce16e0f6f4deb7d47c644a978",
+        "gas": "0x7506f",
+        "value": "0x8ac7230489e80000",
+        "input": "0x1bf7bf6c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004563918244f400000000000000000000000000000000000000000000000000000000000000000000",
+        "nonce": "0x8",
+        "chainId": "0x63564c40"
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0xeee8445b0a5e257e59c65490f909833d035027a1de5a2a9d57b6f219182ac2d6"
+  ],
+  "returns": {
+    "amount": {
+      "internal_type": "uint256",
+      "value": "7342225898329781370"
+    },
+    "vaultId": {
+      "internal_type": "uint256",
+      "value": "21"
+    }
+  },
+  "timestamp": 1724069960,
+  "chain": 1666600000,
+  "commit": "329c9eb"
+}

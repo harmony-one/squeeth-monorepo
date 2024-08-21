@@ -8,24 +8,33 @@ import {IController} from "src/interfaces/IController.sol";
 contract BurnAmount is Script {
     IController controller = IController(payable(vm.envAddress("CONTROLLER_ADDRESS")));
 
+    /**
+     * @notice burn wPowerPerp and remove collateral from a vault or 
+     * @notice burn powerPerp and remove collateral from a vault
+     * @param _vaultId id of the vault
+     * @param _burnAmount amount of powerPerp to burn
+     * @param _withdrawAmount amount of collateral to withdraw
+     * @param _isWAmount if the input amount is a wPowerPerp amount (as opposed to rebasing powerPerp)
+     * @return amount the amount of powerPerp burned, 0 if _isWAmount is true
+    */
     function run(
         uint256 _vaultId,
-        uint256 _powerPerpAmount,
+        uint256 _burnAmount,
         uint256 _withdrawAmount,
         bool _isWAmount
-    ) public {
+    ) public returns (uint256 amount) {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
         if (_isWAmount) {
             controller.burnWPowerPerpAmount(
                 _vaultId,
-                _powerPerpAmount,
+                _burnAmount,
                 _withdrawAmount
             );
         } else {
-            controller.burnPowerPerpAmount(
+            amount = controller.burnPowerPerpAmount(
                 _vaultId,
-                _powerPerpAmount,
+                _burnAmount,
                 _withdrawAmount
             );           
         }
